@@ -132,7 +132,8 @@ export const Shifts: React.FC = () => {
         consultorio: selectedRoomId,
         fecha: pendingAssignment.dateStr,
         hora_inicio: newShiftTime.hora_inicio,
-        hora_fin: newShiftTime.hora_fin
+        hora_fin: newShiftTime.hora_fin,
+        motivo: 'Asignación manual desde la consola web'
       });
       setShifts([...shifts, response.data]);
       showToast('Turno asignado correctamente', 'success');
@@ -154,7 +155,9 @@ export const Shifts: React.FC = () => {
   const handleDeleteShift = async () => {
     if (!shiftToDelete) return;
     try {
-      await api.delete(`shifts/${shiftToDelete}/`);
+      await api.delete(`shifts/${shiftToDelete}/`, {
+        data: { motivo: 'Eliminación manual desde la consola web' }
+      });
       setShifts(shifts.filter(s => s.id !== shiftToDelete));
       showToast('Guardia eliminada correctamente', 'success');
     } catch (err) {
